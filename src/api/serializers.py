@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from board.models import Vacancy, Company
+from board.models import Vacancy, Company, Application
 
 
 class VacancyListSerializer(ModelSerializer):
@@ -12,11 +12,29 @@ class VacancyListSerializer(ModelSerializer):
             'created_at',
         )
 
+class CompanyInVacancySerializer(ModelSerializer):
+    class Meta:
+        model = Company
+        fields = (
+            'name',
+        )
+
 
 class VacancySerializer(ModelSerializer):
+    company = CompanyInVacancySerializer(read_only=True)
     class Meta:
         model = Vacancy
-        fields = '__all__'
+        fields = (
+            'title',
+            'specialization',
+            'company',
+            'skills',
+            'description',
+            'salary_min',
+            'salary_max',
+            'created_at',
+            'updated_at'
+        )
 
 
 class CompanyListSerializer(ModelSerializer):
@@ -52,3 +70,26 @@ class CompanyCreateSerializer(ModelSerializer):
         validated_data['user'] = author
         company = Company.objects.create(**validated_data)
         return company
+
+
+class ApplicationVacancySerializer(ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = (
+            'title',
+            'company',
+            'specialization'
+        )
+
+
+class ApplicationSerializer(ModelSerializer):
+    # vacancy = ApplicationVacancySerializer()
+    class Meta:
+        model = Application
+        fields = (
+            'name',
+            'phone',
+            'letter',
+            'vacancy',
+        )
+        read_only_fields = ('vacancy',)
