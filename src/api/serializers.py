@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from board.models import Vacancy, Company, Application
 
 
@@ -83,7 +83,8 @@ class ApplicationVacancySerializer(ModelSerializer):
 
 
 class ApplicationSerializer(ModelSerializer):
-    # vacancy = ApplicationVacancySerializer()
+    # vacancy = ApplicationVacancySerializer(read_only=True)
+    vacancy_name = ReadOnlyField(source='vacancy.title')
     class Meta:
         model = Application
         fields = (
@@ -91,5 +92,6 @@ class ApplicationSerializer(ModelSerializer):
             'phone',
             'letter',
             'vacancy',
+            'vacancy_name'
         )
-        read_only_fields = ('vacancy',)
+        # read_only_fields = ('vacancy',)
