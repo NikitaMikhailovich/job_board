@@ -12,8 +12,8 @@ from .pagination import VacancyPagination
 from rest_framework.decorators import action
 from rest_framework import status, viewsets
 from rest_framework.response import Response
-from board.models import Vacancy, Company
-from .serializers import (VacancyListSerializer, VacancySerializer,
+from board.models import Vacancy, Company, Application
+from .serializers import (VacancyListSerializer, VacancySerializer, ApplicationSerializer,
                         CompanySerializer, CompanyListSerializer, CompanyCreateSerializer)
 from .filters import VacancyFilter
 
@@ -28,6 +28,21 @@ class VacancyViewSet(viewsets.ReadOnlyModelViewSet):
         if self.action == 'retrieve':
             return VacancySerializer
         return VacancyListSerializer
+    
+    @action(
+            methods=['POST'], detail=True
+    )
+    def send_app(self, request, pk):
+        vacancy = Vacancy.objects.get(pk=pk)
+        serializer = ApplicationSerializer(data=request.data)
+        # validated_data = serializer.validated_data
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            print(validated_data)
+            Application.objects.create(vacancy=vacancy, **validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response('Ошибка', status=status.HTTP_400_BAD_REQUEST,)
+
 
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
