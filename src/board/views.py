@@ -32,7 +32,6 @@ class IndexView(View):
         # print(dir(self))
         # print(request)
         # print(request.__dict__)
-        # print(request.user.groups.name)
         return render(request, self.template_name, context)
 
     def get_context_data(self, *args, **kwargs):
