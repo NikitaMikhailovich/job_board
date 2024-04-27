@@ -13,7 +13,7 @@ env.bak/
 venv.bak/
 
 # Poetry
-poetry.lock
+
 db.sqlite3
 
 help.txt
