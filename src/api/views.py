@@ -14,7 +14,7 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 from board.models import Vacancy, Company, Application
 from .serializers import (VacancyListSerializer, VacancySerializer, ApplicationSerializer,
-                        CompanySerializer, CompanyListSerializer, CompanyCreateSerializer)
+                        CompanySerializer, CompanyListSerializer, CompanyCreateSerializer, ApplicationVacancySerializer)
 from .filters import VacancyFilter
 
 class VacancyViewSet(viewsets.ReadOnlyModelViewSet):
@@ -34,14 +34,12 @@ class VacancyViewSet(viewsets.ReadOnlyModelViewSet):
     )
     def send_app(self, request, pk):
         vacancy = Vacancy.objects.get(pk=pk)
-        request.data['vacancy'] = vacancy.id
         serializer = ApplicationSerializer(data=request.data)
         if serializer.is_valid():
-            validated_data = serializer.validated_data
-            # Application.objects.create(vacancy=vacancy, **validated_data)
-            Application.objects.create(**validated_data)
+            serializer.save(vacancy=vacancy)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST,)
+
     # def send_app(self, request, pk):
     #     vacancy = Vacancy.objects.get(pk=pk)
     #     request_data = request.data
