@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "job-board"
+version = "0.1.0"
+description = ""
+authors = ["Никита Гайнов <nikita.gaynov@mail.ru>"]
+packages = [{include = "job_board"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.1.7"
+pillow = "^9.4.0"
+wemake-python-styleguide = "^0.18.0"
+django-environ = "^0.11.2"
+djangorestframework = "^3.14.0"
+django-filter = "^23.5"
+djoser = "^2.1.0"
+pytest = "^8.1.1"
+pytest-django = "^4.8.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
