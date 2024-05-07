@@ -3,9 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import VacancyViewSet, CompanyViewSet
 
 app_name = 'api'
+
 router = DefaultRouter()
-
-
 router.register('vacancies', VacancyViewSet, basename='vacancies')
 router.register('companies', CompanyViewSet, basename='companies')
 
