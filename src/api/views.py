@@ -1,23 +1,17 @@
-# from django.shortcuts import render
-
-# # Create your views here.
-# # 1) Список вакансий (GET), поля: все
-# # 1.1) company_id 
-# # 1.2) specialization_id
-# # 2) Конкретная вакансия (GET), поля: все, кроме(created_at, updated_at)
-# # 3) Создание вакансий (POST), поля: все, кроме(created_at, updated_at)
-# # 4) Создание компании (POST), поля: 'name', 'city', 'logo', 'information', 'enployee_amount'
 from django_filters import rest_framework as filters
 from .pagination import VacancyPagination
 from rest_framework.decorators import action
 from rest_framework import status, viewsets
 from rest_framework.response import Response
-from board.models import Vacancy, Company, Application
-from .serializers import (VacancyListSerializer, VacancySerializer, ApplicationSerializer,
-                        CompanySerializer, CompanyListSerializer, CompanyCreateSerializer, ApplicationVacancySerializer)
+from board.models import Vacancy, Company
+from .serializers import (VacancyListSerializer, VacancySerializer,
+                          ApplicationSerializer, CompanySerializer,
+                          CompanyListSerializer, CompanyCreateSerializer,
+                          VacancyCreateSerializer,
+                          )
 from .filters import VacancyFilter
 
-class VacancyViewSet(viewsets.ReadOnlyModelViewSet):
+class VacancyViewSet(viewsets.ModelViewSet):
 
     queryset = Vacancy.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
@@ -27,28 +21,21 @@ class VacancyViewSet(viewsets.ReadOnlyModelViewSet):
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return VacancySerializer
-        return VacancyListSerializer
+        elif self.action == 'list':
+            return VacancyListSerializer
+        return VacancyCreateSerializer
     
     @action(
-            methods=['POST'], detail=True
+        methods=['POST'], detail=True,
     )
-    def send_app(self, request, pk):
-        vacancy = Vacancy.objects.get(pk=pk)
+    def response_to_vacancy(self, request, pk):
+        vacancy = Vacancy.objects.get(id=pk)
         serializer = ApplicationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(vacancy=vacancy)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST,)
 
-    # def send_app(self, request, pk):
-    #     vacancy = Vacancy.objects.get(pk=pk)
-    #     request_data = request.data
-    #     serializer = ApplicationSerializer(
-    #         Application.objects.create(vacancy=vacancy, **request_data)
-    #         )
-    #     if serializer.is_valid():
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST,)
 
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
@@ -61,11 +48,9 @@ class CompanyViewSet(viewsets.ModelViewSet):
         return CompanyCreateSerializer
 
     @action(
-        methods=['GET'], detail=False
+        methods=['GET'], detail=False,
     )
     def my(self, request):
-        user = request.user
-        my_company = Company.objects.filter(user=user)
+        my_company = Company.objects.filter(user=request.user)
         serializer = CompanyListSerializer(my_company, many=True)
         return Response(serializer.data)
-    

@@ -12,6 +12,13 @@ class VacancyListSerializer(ModelSerializer):
             'created_at',
         )
 
+
+class VacancyCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = '__all__'
+
+
 class CompanyInVacancySerializer(ModelSerializer):
     class Meta:
         model = Company
@@ -50,6 +57,7 @@ class CompanySerializer(ModelSerializer):
     class Meta:
         model = Company
         fields = '__all__'
+
 
 
 class CompanyCreateSerializer(ModelSerializer):
