@@ -150,3 +150,5 @@ MEDIA_SPECIALIZATION_IMAGE_DIR = 'specialization_image'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
+
+VACANCIES_ON_PAGE = 5
