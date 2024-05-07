@@ -53,4 +53,4 @@ class CompanyViewSet(viewsets.ModelViewSet):
     def my(self, request):
         my_company = Company.objects.filter(user=request.user)
         serializer = CompanyListSerializer(my_company, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data) 
