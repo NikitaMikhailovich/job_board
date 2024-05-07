@@ -22,9 +22,7 @@ class VacancyCreateSerializer(ModelSerializer):
 class CompanyInVacancySerializer(ModelSerializer):
     class Meta:
         model = Company
-        fields = (
-            'name',
-        )
+        fields = ('name',)
 
 
 class VacancySerializer(ModelSerializer):
@@ -74,10 +72,8 @@ class CompanyCreateSerializer(ModelSerializer):
         )
 
     def create(self, validated_data):
-        author = self.context['request'].user # context - это словарь, значенеи по ключу request это ОБЬЕКТ запрос(это каклй то экземпляр класса) и user это атрибут экземпляра класса
-        validated_data['user'] = author
-        company = Company.objects.create(**validated_data)
-        return company
+        validated_data['user'] = self.context['request'].user
+        return Company.objects.create(**validated_data)
 
 
 class ApplicationVacancySerializer(ModelSerializer):
@@ -92,7 +88,6 @@ class ApplicationVacancySerializer(ModelSerializer):
 
 class ApplicationSerializer(ModelSerializer):
     vacancy = ApplicationVacancySerializer(read_only=True)
-    # vacancy_name = ReadOnlyField(source='vacancy.title')
     class Meta:
         model = Application
         fields = (
@@ -101,4 +96,3 @@ class ApplicationSerializer(ModelSerializer):
             'letter',
             'vacancy'
         )
-        # read_only_fields = ('vacancy',)
