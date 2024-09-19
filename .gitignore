@@ -22,3 +22,6 @@ help.txt
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# папки со статикой и медиа
+media/

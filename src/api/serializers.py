@@ -1,5 +1,7 @@
-from rest_framework.serializers import ModelSerializer, ReadOnlyField, RelatedField
-from board.models import Vacancy, Company, Application
+from rest_framework.serializers import (ModelSerializer, ReadOnlyField,
+                                        RelatedField)
+
+from board.models import Application, Company, Vacancy
 
 
 class VacancyListSerializer(ModelSerializer):

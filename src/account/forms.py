@@ -1,13 +1,19 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import get_user_model
 from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+
 
 User = get_user_model()
 
 
+EMPLOYER = 'employer'
+JOB_SEEKER = 'job seeker'
+
+USER_TYPE_CHOICES = ((EMPLOYER, EMPLOYER), (JOB_SEEKER, JOB_SEEKER))
+
 class UserCreateForm(UserCreationForm):
     
-    user_type = forms.ChoiceField(choices=(('employer', 'employer'), ('job seeker', 'job seeker')))
+    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES)
 
     class Meta(UserCreationForm.Meta):
         model = User

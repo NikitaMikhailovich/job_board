@@ -1,15 +1,17 @@
 from django_filters import rest_framework as filters
-from .pagination import VacancyPagination
-from rest_framework.decorators import action
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from board.models import Vacancy, Company
-from .serializers import (VacancyListSerializer, VacancySerializer,
-                          ApplicationSerializer, CompanySerializer,
-                          CompanyListSerializer, CompanyCreateSerializer,
-                          VacancyCreateSerializer,
-                          )
+
+from board.models import Company, Vacancy
+
 from .filters import VacancyFilter
+from .pagination import VacancyPagination
+from .serializers import (ApplicationSerializer, CompanyCreateSerializer,
+                          CompanyListSerializer, CompanySerializer,
+                          VacancyCreateSerializer, VacancyListSerializer,
+                          VacancySerializer)
+
 
 class VacancyViewSet(viewsets.ModelViewSet):
 
@@ -29,7 +31,7 @@ class VacancyViewSet(viewsets.ModelViewSet):
         methods=['POST'], detail=True,
     )
     def response_to_vacancy(self, request, pk):
-        vacancy = Vacancy.objects.get(id=pk)
+        vacancy = Vacancy.objects.get(pk=pk)
         serializer = ApplicationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(vacancy=vacancy)
@@ -53,4 +55,4 @@ class CompanyViewSet(viewsets.ModelViewSet):
     def my(self, request):
         my_company = Company.objects.filter(user=request.user)
         serializer = CompanyListSerializer(my_company, many=True)
-        return Response(serializer.data) 
+        return Response(serializer.data)

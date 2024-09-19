@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.http.request import HttpRequest
 from django.contrib.auth.admin import UserAdmin
-
-from .models import Specialization, Company, Vacancy, Application
 from django.contrib.auth.models import User
+from django.http.request import HttpRequest
+
+from .models import Application, Company, Specialization, Vacancy
+
 
 @admin.register(Specialization)
 class SpecializationAdmin(admin.ModelAdmin):

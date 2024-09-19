@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import environ
+
 from pathlib import Path
+
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,6 +54,8 @@ INSTALLED_APPS = [
 
     # apps
     'board.apps.BoardConfig',
+    'account.apps.AccountConfig',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +156,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 VACANCIES_ON_PAGE = 5
+USER_TYPE_CHOICES = (('employer', 'employer'), ('job seeker', 'job seeker'))

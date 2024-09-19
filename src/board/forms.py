@@ -1,5 +1,7 @@
 from django.forms import ModelForm
-from board.models import Application, Vacancy, Company
+
+from board.models import Application, Vacancy
+
 
 class ApplicationForm(ModelForm):
     class Meta:
@@ -11,12 +13,3 @@ class VacancyCreateForm(ModelForm):
     class Meta:
         model = Vacancy
         fields = ['title', 'company', 'specialization', 'skills', 'description', 'salary_min', 'salary_max']
-
-# class CompanyCreateForm(ModelForm):
-#     class Meta:
-#         model = Company
-#         fields = '__all__'
-
-
-
-

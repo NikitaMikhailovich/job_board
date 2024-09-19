@@ -1,7 +1,8 @@
 import pytest
-
 from rest_framework.test import APIClient
+
 from board.models import Company, Vacancy
+
 
 @pytest.fixture()
 def api_client():
@@ -11,6 +12,17 @@ def api_client():
 @pytest.fixture()
 def user_data():
     return {'username': 'admin', 'password': 'adminnimda123'}
+
+@pytest.fixture()
+def vacancy_data(create_company):
+    return {'title': 'Product Manager', 'company': 1}
+
+@pytest.fixture()
+def vacancy_list_data(create_company):
+    return [
+        {'title': 'Python Developer', 'company': create_company},
+        {'title': 'Manager', 'company': create_company}
+    ]
 
 
 @pytest.fixture()
@@ -38,6 +50,7 @@ def create_company():
     company = Company.objects.create(**data)
     return company
 
+
 @pytest.fixture()
 def create_vacancy(create_company):
     
@@ -45,9 +58,17 @@ def create_vacancy(create_company):
     vacancy = Vacancy.objects.create(**data)
     return vacancy
 
+
+@pytest.fixture()
+def create_list_vacancy(vacancy_list_data):
+    vacancies = []
+    for vacancy in vacancy_list_data:
+        create_vacancy = Vacancy.objects.create(**vacancy)
+        vacancies.append(create_vacancy)
+    return vacancies
+
+
 @pytest.fixture()
 def get_vacancy(api_client, create_vacancy):
     response = api_client.get(f'/api/v1/vacancies/{create_vacancy.id}/')
     return response
-
-# poetry run pytest -vv

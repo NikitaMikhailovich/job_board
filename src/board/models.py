@@ -1,13 +1,12 @@
 from django.conf import settings
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 
 User = get_user_model()
 
 class Specialization(models.Model):
     name = models.CharField(
-        'Название',
-        max_length=127,
+        'Название', max_length=127
         )
     logo = models.ImageField(
         'Ярлык',
@@ -36,8 +35,7 @@ class Company(models.Model):
         verbose_name='Наименование',
         )
     city = models.CharField(
-        max_length=127,
-        verbose_name='Город',
+        max_length=127, verbose_name='Город',
         )
     logo = models.ImageField(
         'Логотип',
@@ -48,11 +46,10 @@ class Company(models.Model):
     information = models.TextField(
         'Информация о компании',
         blank=True,
-        default=''
+        default='',
         )
     enployee_amount = models.IntegerField(
-        verbose_name='Количество сотрудников',
-    )
+        verbose_name='Количество сотрудников',)
 
     class Meta:
         verbose_name = 'Компания'
